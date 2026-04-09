@@ -10,53 +10,45 @@
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
+    /* ── 스크롤 허용, 가로 오버플로만 차단 ── */
     html, body {
-      width: 100%; height: 100%;
-      overflow: hidden;
+      width: 100%;
+      overflow-x: hidden;
       background: #0d0d0d;
     }
 
-    /* ── Viewport wrapper — 배경을 항상 브라우저 꽉 채움 ── */
+    /* ── 배경: 항상 브라우저 전체 고정 ── */
     #viewport {
-      width: 100vw;
-      height: 100vh;
       position: relative;
-      overflow: hidden;
+      width: 100%;
+      min-height: 100vh;
+      overflow-x: hidden;
       background-image:
         url("data:image/svg+xml,%3Csvg viewBox='0 0 1480 987' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMidYMid slice'%3E%3Crect width='100%25' height='100%25' fill='url(%23g1)'/%3E%3Cdefs%3E%3CradialGradient id='g1' gradientUnits='userSpaceOnUse' cx='0' cy='0' r='10' gradientTransform='matrix(268.92 0 0 51.332 740 493.5)'%3E%3Cstop stop-color='rgba(76,0,255,0.21)' offset='0'/%3E%3Cstop stop-color='rgba(76,0,255,0.02)' offset='0.5'/%3E%3C/radialGradient%3E%3C/defs%3E%3C/svg%3E"),
         url("data:image/svg+xml,%3Csvg viewBox='0 0 1480 987' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMidYMid slice'%3E%3Crect width='100%25' height='100%25' fill='url(%23g2)'/%3E%3Cdefs%3E%3CradialGradient id='g2' gradientUnits='userSpaceOnUse' cx='0' cy='0' r='10' gradientTransform='matrix(380.83 0 0 72.693 296 296.1)'%3E%3Cstop stop-color='rgba(0,242,255,0.11)' offset='0'/%3E%3Cstop stop-color='rgba(0,242,255,0)' offset='0.4'/%3E%3C/radialGradient%3E%3C/defs%3E%3C/svg%3E"),
         url("data:image/svg+xml,%3Csvg viewBox='0 0 1480 987' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMidYMid slice'%3E%3Crect width='100%25' height='100%25' fill='url(%23g3)'/%3E%3Cdefs%3E%3CradialGradient id='g3' gradientUnits='userSpaceOnUse' cx='0' cy='0' r='10' gradientTransform='matrix(380.83 0 0 72.693 1184 690.9)'%3E%3Cstop stop-color='rgba(255,0,221,0.13)' offset='0'/%3E%3Cstop stop-color='rgba(255,0,221,0)' offset='0.4'/%3E%3C/radialGradient%3E%3C/defs%3E%3C/svg%3E"),
         linear-gradient(90deg, rgb(3,7,30) 0%, rgb(3,7,30) 100%);
       background-size: cover;
-      background-position: center;
+      background-position: center top;
+      background-attachment: fixed;
     }
 
-    /* ── Fixed 1480×987 design canvas ── */
+    /* ══════════════════════════════════════
+       CANVAS — 1480px 기준, 너비에 맞게 스케일
+       transform-origin: top left → 상단 정렬
+    ══════════════════════════════════════ */
     #canvas {
-      position: absolute;
-      top: 0; left: 0;
+      position: relative;
       width: 1480px;
       height: 987px;
       transform-origin: top left;
       background: transparent;
     }
 
-    /* ══════════════════════════════════════
-       BACKGROUND GRADIENTS (canvas 내부용 — 제거됨)
-    ══════════════════════════════════════ */
-    .bg-layer {
-      display: none;
-      pointer-events: none;
-      background-image:
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 1480 987' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'%3E%3Crect width='100%25' height='100%25' fill='url(%23g1)'/%3E%3Cdefs%3E%3CradialGradient id='g1' gradientUnits='userSpaceOnUse' cx='0' cy='0' r='10' gradientTransform='matrix(268.92 0 0 51.332 740 493.5)'%3E%3Cstop stop-color='rgba(76,0,255,0.21)' offset='0'/%3E%3Cstop stop-color='rgba(76,0,255,0.02)' offset='0.5'/%3E%3C/radialGradient%3E%3C/defs%3E%3C/svg%3E"),
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 1480 987' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'%3E%3Crect width='100%25' height='100%25' fill='url(%23g2)'/%3E%3Cdefs%3E%3CradialGradient id='g2' gradientUnits='userSpaceOnUse' cx='0' cy='0' r='10' gradientTransform='matrix(380.83 0 0 72.693 296 296.1)'%3E%3Cstop stop-color='rgba(0,242,255,0.11)' offset='0'/%3E%3Cstop stop-color='rgba(0,242,255,0)' offset='0.4'/%3E%3C/radialGradient%3E%3C/defs%3E%3C/svg%3E"),
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 1480 987' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'%3E%3Crect width='100%25' height='100%25' fill='url(%23g3)'/%3E%3Cdefs%3E%3CradialGradient id='g3' gradientUnits='userSpaceOnUse' cx='0' cy='0' r='10' gradientTransform='matrix(380.83 0 0 72.693 1184 690.9)'%3E%3Cstop stop-color='rgba(255,0,221,0.13)' offset='0'/%3E%3Cstop stop-color='rgba(255,0,221,0)' offset='0.4'/%3E%3C/radialGradient%3E%3C/defs%3E%3C/svg%3E"),
-        linear-gradient(90deg, rgb(3,7,30) 0%, rgb(3,7,30) 100%);
-    }
+    .bg-layer { display: none; }
 
     /* ══════════════════════════════════════
        HEADER
-       Figma: left:50%, top:24px, w:1224px, translate(-50%,0)
     ══════════════════════════════════════ */
     .header {
       position: absolute;
@@ -70,7 +62,6 @@
       z-index: 10;
     }
 
-    /* Logo: 212.985×20.995px */
     .logo {
       width: 212.985px;
       height: 20.995px;
@@ -84,7 +75,6 @@
       object-position: left center;
     }
 
-    /* Nav: 445.48px wide, items absolutely positioned */
     .nav {
       position: relative;
       width: 445.48px;
@@ -105,16 +95,60 @@
       transition: color 0.2s;
     }
     .nav a:hover { color: #8273ff; }
+    .nav a:nth-child(1) { left: 0.48px; }
+    .nav a:nth-child(2) { left: 77.48px; }
+    .nav a:nth-child(3) { left: 162.48px; }
+    .nav a:nth-child(4) { left: 258.48px; }
+    .nav a:nth-child(5) { left: 355.48px; }
 
-    /* Exact Figma left offsets */
-    .nav a:nth-child(1) { left: 0.48px; }    /* About */
-    .nav a:nth-child(2) { left: 77.48px; }   /* Clients */
-    .nav a:nth-child(3) { left: 162.48px; }  /* Services */
-    .nav a:nth-child(4) { left: 258.48px; }  /* Portfolio */
-    .nav a:nth-child(5) { left: 355.48px; }  /* Partnership */
+    /* 햄버거 버튼 — 캔버스 내부에서는 숨김 (반응형 시 표시) */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+      flex-shrink: 0;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: #e1e3e1;
+      border-radius: 2px;
+      transition: all 0.25s;
+    }
+
+    /* 모바일 드로어 메뉴 */
+    .mobile-menu {
+      display: none;
+      position: absolute;
+      top: 68px;
+      left: 0;
+      right: 0;
+      background: rgba(3, 7, 30, 0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding: 24px 32px;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 50;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 600;
+      font-size: 18px;
+      color: #e1e3e1;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .mobile-menu a:hover { color: #8273ff; }
 
     /* ══════════════════════════════════════
-       BUTTON BASE
+       BUTTON
     ══════════════════════════════════════ */
     .btn {
       display: inline-flex;
@@ -139,18 +173,11 @@
     }
     .btn:active { transform: translateY(0); }
     .btn-icon { width: 16px; height: 16px; display: block; flex-shrink: 0; }
-
-    /* Header button: px-16, py-12, 16px font */
     .btn-header { padding: 12px 16px; font-size: 16px; line-height: 24px; }
-
-    /* Hero button: px-32, py-16, 18px font */
-    .btn-hero { padding: 16px 32px; font-size: 18px; line-height: 24px; }
+    .btn-hero   { padding: 16px 32px; font-size: 18px; line-height: 24px; }
 
     /* ══════════════════════════════════════
-       ARC GALLERY CONTAINER
-       Figma: left:calc(50%-1px), top:calc(50%-36px)
-              w:1226px, h:703px, translate(-50%,-50%)
-              overflow:clip
+       ARC GALLERY
     ══════════════════════════════════════ */
     .arc-container {
       position: absolute;
@@ -163,7 +190,6 @@
       z-index: 1;
     }
 
-    /* Card wrapper: absolute, centers the rotated card */
     .arc-wrap {
       position: absolute;
       display: flex;
@@ -171,7 +197,6 @@
       justify-content: center;
     }
 
-    /* Card: exact Figma 149.766×192.551px, border-radius:17.115px */
     .arc-card {
       width: 149.766px;
       height: 192.551px;
@@ -195,36 +220,25 @@
       pointer-events: none;
     }
 
-    /* ── Card positions (Figma exact) ── */
-    .c1 { left: 20.48px;  top: 494.06px; width: 202.530px; height: 162.832px; }
+    .c1 { left: 20.48px;   top: 494.06px; width: 202.530px; height: 162.832px; }
     .c1 .arc-card { transform: rotate(-86deg); }
-
-    .c2 { left: 57.99px;  top: 267.49px; width: 240.318px; height: 222.624px; }
+    .c2 { left: 57.99px;   top: 267.49px; width: 240.318px; height: 222.624px; }
     .c2 .arc-card { transform: rotate(-62deg); }
-
-    .c3 { left: 191.39px; top: 100.10px; width: 236.556px; height: 243.931px; }
+    .c3 { left: 191.39px;  top: 100.10px; width: 236.556px; height: 243.931px; }
     .c3 .arc-card { transform: rotate(-38deg); }
-
-    .c4 { left: 397.61px; top:  20.84px; width: 191.899px; height: 223.057px; }
+    .c4 { left: 397.61px;  top:  20.84px; width: 191.899px; height: 223.057px; }
     .c4 .arc-card { transform: rotate(-14deg); }
-
-    .c5 { left: 635.69px; top:  20.84px; width: 191.901px; height: 223.064px; }
+    .c5 { left: 635.69px;  top:  20.84px; width: 191.901px; height: 223.064px; }
     .c5 .arc-card { transform: rotate(14deg); }
-
-    .c6 { left: 797.26px; top: 100.10px; width: 236.557px; height: 243.933px; }
+    .c6 { left: 797.26px;  top: 100.10px; width: 236.557px; height: 243.933px; }
     .c6 .arc-card { transform: rotate(38deg); }
-
-    .c7 { left: 926.91px; top: 267.49px; width: 240.315px; height: 222.623px; }
+    .c7 { left: 926.91px;  top: 267.49px; width: 240.315px; height: 222.623px; }
     .c7 .arc-card { transform: rotate(62deg); }
-
     .c8 { left: 1002.20px; top: 494.07px; width: 202.529px; height: 162.833px; }
     .c8 .arc-card { transform: rotate(86deg); }
 
     /* ══════════════════════════════════════
        HEADLINE CONTENT
-       Figma: left:50%, top:calc(50%+115.5px)
-              w:654px, h:272px, translate(-50%,-50%)
-              border-radius:200px
     ══════════════════════════════════════ */
     .headline-content {
       position: absolute;
@@ -251,7 +265,6 @@
       text-align: center;
     }
 
-    /* Newsreader Regular 60px, leading-none */
     .hl {
       font-family: 'Newsreader', Georgia, serif;
       font-weight: 400;
@@ -263,7 +276,6 @@
       text-align: center;
     }
 
-    /* Newsreader Italic 48px, color:#8273ff, leading-none */
     .hl-italic {
       font-family: 'Newsreader', Georgia, serif;
       font-weight: 400;
@@ -278,8 +290,6 @@
 
     /* ══════════════════════════════════════
        BOTTOM INFO
-       Figma: left:425px, top:809px, w:630px
-              flex-col, gap:24px, items:center
     ══════════════════════════════════════ */
     .bottom-info {
       position: absolute;
@@ -293,7 +303,6 @@
       z-index: 5;
     }
 
-    /* Gothic A1 Light → Noto Sans KR 300, 20px, color:white, leading-none */
     .subtitle {
       font-family: 'Noto Sans KR', sans-serif;
       font-weight: 300;
@@ -304,7 +313,6 @@
       width: 100%;
     }
 
-    /* border-top, px:42, pt:13, pb:12, gap:30 */
     .service-row {
       display: flex;
       align-items: center;
@@ -314,7 +322,6 @@
       width: 100%;
     }
 
-    /* Manrope Bold 16px, color:#8273ff */
     .service-tag {
       font-family: 'Manrope', sans-serif;
       font-weight: 700;
@@ -330,13 +337,31 @@
       background: rgba(255,255,255,0.2);
       flex-shrink: 0;
     }
+
+    /* ══════════════════════════════════════
+       BREAKPOINTS
+       Desktop  : 1200px+   (기본, 풀 레이아웃)
+       Tablet   : 768–1199px
+       Mobile   : ~767px
+    ══════════════════════════════════════ */
+
+    /* ── Tablet (768–1199px) ── */
+    @media (max-width: 1199px) {
+      /* 캔버스 스케일은 JS가 처리 — CSS는 햄버거 표시만 */
+    }
+
+    /* ── Mobile (~767px) ── */
+    @media (max-width: 767px) {
+      .nav      { display: none; }
+      .btn-header { display: none; }
+      .hamburger  { display: flex; }
+    }
   </style>
 </head>
 <body>
   <div id="viewport">
     <div id="canvas">
 
-      <!-- Background -->
       <div class="bg-layer"></div>
 
       <!-- ── HEADER ── -->
@@ -357,12 +382,29 @@
           Contact Us
           <img class="btn-icon" src="https://www.figma.com/api/mcp/asset/2b1e4262-5424-447d-b058-c2fc78697fee" alt="" aria-hidden="true" />
         </a>
+
+        <!-- 모바일 햄버거 -->
+        <button class="hamburger" id="hamburger" aria-label="메뉴 열기" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
       </header>
+
+      <!-- 모바일 드로어 -->
+      <nav class="mobile-menu" id="mobileMenu" aria-label="모바일 메뉴">
+        <a href="#about"       onclick="closeMenu()">About</a>
+        <a href="#clients"     onclick="closeMenu()">Clients</a>
+        <a href="#services"    onclick="closeMenu()">Services</a>
+        <a href="#portfolio"   onclick="closeMenu()">Portfolio</a>
+        <a href="#partnership" onclick="closeMenu()">Partnership</a>
+        <a href="#contact" class="btn btn-header" style="margin-top:8px;align-self:flex-start;" onclick="closeMenu()">
+          Contact Us
+          <img class="btn-icon" src="https://www.figma.com/api/mcp/asset/2b1e4262-5424-447d-b058-c2fc78697fee" alt="" aria-hidden="true" />
+        </a>
+      </nav>
 
       <!-- ── ARC GALLERY ── -->
       <div class="arc-container" aria-label="포트폴리오 갤러리">
 
-        <!-- Card 1: AI Genesis -->
         <div class="arc-wrap c1">
           <div class="arc-card" style="position:relative;">
             <div style="position:absolute;inset:0;overflow:hidden;border-radius:inherit;">
@@ -376,7 +418,6 @@
           </div>
         </div>
 
-        <!-- Card 2: AI Portrait — Figma 정확 크롭 + scale(1.35)로 흰 테두리 제거 -->
         <div class="arc-wrap c2">
           <div class="arc-card" style="border:none;position:relative;">
             <div style="position:absolute;inset:0;overflow:hidden;border-radius:inherit;">
@@ -390,7 +431,6 @@
           </div>
         </div>
 
-        <!-- Card 3: Sculptural Art -->
         <div class="arc-wrap c3">
           <div class="arc-card" style="position:relative;">
             <div style="position:absolute;inset:0;overflow:hidden;border-radius:inherit;">
@@ -406,7 +446,6 @@
           </div>
         </div>
 
-        <!-- Card 4: Abstract Form -->
         <div class="arc-wrap c4">
           <div class="arc-card" style="position:relative;">
             <div style="position:absolute;inset:0;overflow:hidden;border-radius:inherit;">
@@ -420,7 +459,6 @@
           </div>
         </div>
 
-        <!-- Card 5: Neural Geometry -->
         <div class="arc-wrap c5">
           <div class="arc-card" style="position:relative;">
             <div style="position:absolute;inset:0;overflow:hidden;">
@@ -430,7 +468,6 @@
           </div>
         </div>
 
-        <!-- Card 6: Chroma Scene -->
         <div class="arc-wrap c6">
           <div class="arc-card" style="position:relative;">
             <div style="position:absolute;inset:0;overflow:hidden;">
@@ -440,7 +477,6 @@
           </div>
         </div>
 
-        <!-- Card 7: Ethereal Visual -->
         <div class="arc-wrap c7">
           <div class="arc-card" style="position:relative;">
             <div style="position:absolute;inset:0;overflow:hidden;border-radius:inherit;">
@@ -454,7 +490,6 @@
           </div>
         </div>
 
-        <!-- Card 8: Neural Pulse — 가로 이미지 -86deg 회전 크롭 -->
         <div class="arc-wrap c8">
           <div class="arc-card" style="position:relative;">
             <div style="position:absolute;inset:0;overflow:hidden;border-radius:17.115px;">
@@ -499,23 +534,46 @@
   </div><!-- /viewport -->
 
   <script>
-    const canvas = document.getElementById('canvas');
+    const canvas   = document.getElementById('canvas');
+    const viewport = document.getElementById('viewport');
     const DESIGN_W = 1480;
     const DESIGN_H = 987;
 
+    /* ── 캔버스: 너비 기준 스케일, 상단 정렬 ── */
     function scaleCanvas() {
-      const scaleX = window.innerWidth  / DESIGN_W;
-      const scaleY = window.innerHeight / DESIGN_H;
-      const scale  = Math.min(scaleX, scaleY);
-
-      const offsetX = (window.innerWidth  - DESIGN_W * scale) / 2;
-      const offsetY = (window.innerHeight - DESIGN_H * scale) / 2;
-
-      canvas.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale})`;
+      const scale = window.innerWidth / DESIGN_W;
+      canvas.style.transform       = `scale(${scale})`;
+      canvas.style.transformOrigin = 'top left';
+      // 스케일된 높이만큼 viewport 공간 확보
+      viewport.style.minHeight = (DESIGN_H * scale) + 'px';
     }
 
     scaleCanvas();
     window.addEventListener('resize', scaleCanvas);
+
+    /* ── 햄버거 메뉴 ── */
+    const hamburger  = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      hamburger.setAttribute('aria-expanded', isOpen);
+      // 아이콘 X 변환
+      const spans = hamburger.querySelectorAll('span');
+      if (isOpen) {
+        spans[0].style.cssText = 'transform:translateY(7px) rotate(45deg)';
+        spans[1].style.cssText = 'opacity:0';
+        spans[2].style.cssText = 'transform:translateY(-7px) rotate(-45deg)';
+      } else {
+        spans.forEach(s => s.style.cssText = '');
+      }
+    });
+
+    function closeMenu() {
+      mobileMenu.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', false);
+      hamburger.querySelectorAll('span').forEach(s => s.style.cssText = '');
+    }
   </script>
 </body>
 </html>
