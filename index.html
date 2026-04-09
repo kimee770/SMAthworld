@@ -541,11 +541,13 @@
 
     /* ── 캔버스: 너비 기준 스케일, 상단 정렬 ── */
     function scaleCanvas() {
-      const scale = Math.min(1, window.innerWidth / DESIGN_W);
-      canvas.style.transform       = `scale(${scale})`;
+      const vw    = window.innerWidth;
+      const scale = Math.min(1, vw / DESIGN_W);
+      // 데스크톱: 남은 공간 절반으로 수평 중앙정렬, 모바일: 0
+      const offsetX = Math.max(0, (vw - DESIGN_W) / 2);
+      canvas.style.transform       = `translateX(${offsetX}px) scale(${scale})`;
       canvas.style.transformOrigin = 'top left';
-      // 스케일된 높이만큼 viewport 공간 확보
-      viewport.style.minHeight = (DESIGN_H * scale) + 'px';
+      viewport.style.minHeight     = (DESIGN_H * scale) + 'px';
     }
 
     scaleCanvas();
