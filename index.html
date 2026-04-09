@@ -363,17 +363,10 @@
           </div>
         </div>
 
-        <!-- Card 2: AI Portrait — bg:imgAiPortait + main:imgUnnamed2 -->
+        <!-- Card 2: AI Portrait — 배경 레이어 제거, 테두리 없음 -->
         <div class="arc-wrap c2">
-          <div class="arc-card" style="position:relative;">
-            <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;">
-              <img src="https://www.figma.com/api/mcp/asset/8624bfed-78d3-4aa5-a08e-aef6342d5db8"
-                   alt="" style="position:absolute;height:100%;left:-14.49%;top:0;width:128.99%;object-fit:cover;" />
-            </div>
-            <div style="position:absolute;inset:0;overflow:hidden;">
-              <img src="https://www.figma.com/api/mcp/asset/b867fad1-1070-4309-9138-b7cfcaac02e8"
-                   alt="AI Portrait" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
-            </div>
+          <div class="arc-card" style="border:none;">
+            <img src="https://www.figma.com/api/mcp/asset/b867fad1-1070-4309-9138-b7cfcaac02e8" alt="AI Portrait" />
           </div>
         </div>
 
@@ -426,10 +419,19 @@
           </div>
         </div>
 
-        <!-- Card 8: Neural Pulse — single image -->
+        <!-- Card 8: Neural Pulse — 가로 이미지를 -86deg 회전 후 크롭 (Figma 구조 그대로) -->
         <div class="arc-wrap c8">
-          <div class="arc-card">
-            <img src="https://www.figma.com/api/mcp/asset/0a1b3729-9195-4cb8-8f93-4639b4bd4257" alt="Neural Pulse" />
+          <div class="arc-card" style="position:relative;">
+            <div style="position:absolute;inset:0;overflow:hidden;border-radius:17.115px;">
+              <div style="position:absolute;display:flex;align-items:center;justify-content:center;
+                          width:404.274px;height:664.387px;left:-24.56px;top:-293.69px;">
+                <div style="transform:rotate(-86deg);flex-shrink:0;">
+                  <img src="https://www.figma.com/api/mcp/asset/0a1b3729-9195-4cb8-8f93-4639b4bd4257"
+                       alt="Neural Pulse"
+                       style="width:640.804px;height:360.452px;object-fit:cover;display:block;pointer-events:none;" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
