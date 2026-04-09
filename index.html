@@ -362,6 +362,140 @@
       .btn-header { display: none; }
       .hamburger  { display: flex; }
     }
+
+    /* ══════════════════════════════════════
+       CARD HOVER
+    ══════════════════════════════════════ */
+    .arc-wrap {
+      transition: transform 0.28s ease, filter 0.28s ease;
+      will-change: transform, opacity;
+    }
+    .arc-wrap:hover {
+      transform: scale(1.07);
+      filter: drop-shadow(0 8px 24px rgba(130,115,255,0.4));
+      z-index: 20 !important;
+    }
+    .arc-wrap:hover .arc-card {
+      box-shadow: 0 24px 60px rgba(0,0,0,0.9), 0 0 28px rgba(130,115,255,0.5);
+      border-color: rgba(130,115,255,0.4);
+      cursor: pointer;
+    }
+
+    /* ══════════════════════════════════════
+       EXPANDED CARD OVERLAY
+    ══════════════════════════════════════ */
+    #card-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0);
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
+      transition: background 0.4s ease, backdrop-filter 0.4s ease;
+      pointer-events: none;
+      visibility: hidden;
+    }
+    #card-overlay.active {
+      background: rgba(0,0,0,0.78);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      pointer-events: all;
+      visibility: visible;
+    }
+    #card-overlay.closing {
+      background: rgba(0,0,0,0);
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
+    }
+
+    #expanded-card {
+      position: relative;
+      width: 760px;
+      height: 500px;
+      border-radius: 22px;
+      overflow: hidden;
+      transform: perspective(1200px) rotateY(-90deg);
+      transition: transform 0.55s cubic-bezier(0.34, 1.1, 0.64, 1);
+      box-shadow: 0 40px 120px rgba(0,0,0,0.85);
+    }
+    #card-overlay.active  #expanded-card { transform: perspective(1200px) rotateY(0deg); }
+    #card-overlay.closing #expanded-card {
+      transform: perspective(1200px) rotateY(90deg);
+      transition: transform 0.38s cubic-bezier(0.55, 0, 1, 0.45);
+    }
+
+    #expanded-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .exp-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top,
+        rgba(0,0,0,0.92) 0%,
+        rgba(0,0,0,0.45) 45%,
+        rgba(0,0,0,0.1)  70%,
+        transparent 100%);
+      padding: 36px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    .exp-category {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: #ff2d78;
+      margin-bottom: 10px;
+    }
+    .exp-title {
+      font-family: 'Newsreader', Georgia, serif;
+      font-weight: 400;
+      font-style: italic;
+      font-size: 54px;
+      line-height: 1.1;
+      color: #ffffff;
+      margin-bottom: 14px;
+    }
+    .exp-desc {
+      font-family: 'Manrope', sans-serif;
+      font-size: 15px;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.72);
+      max-width: 480px;
+    }
+
+    #btn-close {
+      position: absolute;
+      bottom: 28px;
+      right: 28px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(80,80,90,0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.15);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+      line-height: 1;
+      transition: background 0.2s;
+      z-index: 10;
+    }
+    #btn-close:hover { background: rgba(100,100,110,0.85); }
   </style>
 </head>
 <body>
@@ -539,34 +673,48 @@
     </div><!-- /canvas -->
   </div><!-- /viewport -->
 
+  <!-- ── EXPANDED CARD OVERLAY ── -->
+  <div id="card-overlay">
+    <div id="expanded-card">
+      <img id="expanded-img" src="" alt="" />
+      <div class="exp-overlay">
+        <span class="exp-category"></span>
+        <h2 class="exp-title"></h2>
+        <p class="exp-desc"></p>
+      </div>
+      <button id="btn-close">✕</button>
+    </div>
+  </div>
+
   <script>
+    /* ══════════════════════════════════════
+       CANVAS SCALE
+    ══════════════════════════════════════ */
     const canvas   = document.getElementById('canvas');
     const viewport = document.getElementById('viewport');
     const DESIGN_W = 1480;
     const DESIGN_H = 987;
 
-    /* ── 캔버스: 너비 기준 스케일, 상단 정렬 ── */
     function scaleCanvas() {
-      const vw    = window.innerWidth;
-      const scale = Math.min(1, vw / DESIGN_W);
-      // 데스크톱: 남은 공간 절반으로 수평 중앙정렬, 모바일: 0
+      const vw      = window.innerWidth;
+      const scale   = Math.min(1, vw / DESIGN_W);
       const offsetX = Math.max(0, (vw - DESIGN_W) / 2);
       canvas.style.transform       = `translateX(${offsetX}px) scale(${scale})`;
       canvas.style.transformOrigin = 'top left';
       viewport.style.minHeight     = (DESIGN_H * scale) + 'px';
     }
-
     scaleCanvas();
     window.addEventListener('resize', scaleCanvas);
 
-    /* ── 햄버거 메뉴 ── */
+    /* ══════════════════════════════════════
+       HAMBURGER MENU
+    ══════════════════════════════════════ */
     const hamburger  = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobileMenu');
 
     hamburger.addEventListener('click', () => {
       const isOpen = mobileMenu.classList.toggle('open');
       hamburger.setAttribute('aria-expanded', isOpen);
-      // 아이콘 X 변환
       const spans = hamburger.querySelectorAll('span');
       if (isOpen) {
         spans[0].style.cssText = 'transform:translateY(7px) rotate(45deg)';
@@ -582,6 +730,93 @@
       hamburger.setAttribute('aria-expanded', false);
       hamburger.querySelectorAll('span').forEach(s => s.style.cssText = '');
     }
+
+    /* ══════════════════════════════════════
+       CARD DATA
+    ══════════════════════════════════════ */
+    const CARD_DATA = [
+      { category: 'Featured Artwork', title: 'AI Genesis',      desc: 'AI 기반의 생성형 이미지 아트 프로젝트. 신경망이 만들어내는 새로운 시각 언어를 탐구합니다.' },
+      { category: 'AI Portrait',      title: 'AI Portrait',     desc: 'AI를 활용한 인물 사진 스타일 변환 작업. 현실과 가상의 경계를 허무는 초상화 시리즈.' },
+      { category: 'Generative Art',   title: 'Sculptural Art',  desc: '조각적 형태의 AI 생성 아트워크. 물성과 디지털의 교차점에서 탄생한 시각 언어.' },
+      { category: 'XR & Media Art',   title: 'Abstract Form',   desc: 'A kinetic exploration of neural geometry and fluid editorial aesthetics, generated with SMATh\'s proprietary AI models.' },
+      { category: 'AI Solutions',     title: 'Neural Geometry', desc: '신경망 기반의 기하학적 패턴 생성. 수학적 구조와 AI 창의성이 만나는 지점을 시각화합니다.' },
+      { category: 'Generative AI',    title: 'Chroma Scene',    desc: '다채로운 색상의 AI 생성 장면 구성. 빛과 색의 조화로 탄생한 몰입형 비주얼 경험.' },
+      { category: 'Visual AI',        title: 'Ethereal Visual', desc: '몽환적인 분위기의 AI 비주얼 아트. 현실을 초월한 감각적 이미지의 세계로 초대합니다.' },
+      { category: 'AI Media Art',     title: 'Neural Pulse',    desc: 'AI와 뉴럴 네트워크의 시각적 표현. 데이터의 흐름을 예술적 언어로 번역한 미디어 아트.' },
+    ];
+
+    /* ══════════════════════════════════════
+       ENTRANCE ANIMATION
+    ══════════════════════════════════════ */
+    const arcWraps = Array.from(document.querySelectorAll('.arc-wrap'));
+
+    // 초기: 왼쪽 오프셋 + 투명
+    arcWraps.forEach(wrap => {
+      wrap.style.opacity    = '0';
+      wrap.style.transform  = 'translateX(-160px)';
+      wrap.style.transition = 'none';
+    });
+
+    // 순서대로 슬라이드 인 (좌→우, 160ms 간격)
+    arcWraps.forEach((wrap, i) => {
+      setTimeout(() => {
+        wrap.style.transition = 'transform 0.7s cubic-bezier(0.34, 1.1, 0.64, 1), opacity 0.5s ease';
+        wrap.style.transform  = 'translateX(0)';
+        wrap.style.opacity    = '1';
+        // 완료 후 인라인 스타일 제거 → CSS hover 활성화
+        setTimeout(() => {
+          wrap.style.transform  = '';
+          wrap.style.opacity    = '';
+          wrap.style.transition = '';
+        }, 800);
+      }, 350 + i * 160);
+    });
+
+    /* ══════════════════════════════════════
+       EXPANDED CARD OVERLAY
+    ══════════════════════════════════════ */
+    const overlay      = document.getElementById('card-overlay');
+    const expandedCard = document.getElementById('expanded-card');
+    const expandedImg  = document.getElementById('expanded-img');
+    const expCategory  = overlay.querySelector('.exp-category');
+    const expTitle     = overlay.querySelector('.exp-title');
+    const expDesc      = overlay.querySelector('.exp-desc');
+    const btnClose     = document.getElementById('btn-close');
+
+    let overlayBusy = false;
+
+    function openCard(index) {
+      if (overlayBusy) return;
+      const data = CARD_DATA[index];
+      const img  = arcWraps[index].querySelector('img');
+
+      expandedImg.src         = img ? img.src : '';
+      expandedImg.alt         = data.title;
+      expCategory.textContent = data.category;
+      expTitle.textContent    = data.title;
+      expDesc.textContent     = data.desc;
+
+      overlay.classList.remove('closing');
+      overlay.classList.add('active');
+    }
+
+    function closeCard() {
+      if (overlayBusy) return;
+      overlayBusy = true;
+      overlay.classList.add('closing');
+      setTimeout(() => {
+        overlay.classList.remove('active', 'closing');
+        overlayBusy = false;
+      }, 420);
+    }
+
+    arcWraps.forEach((wrap, i) => {
+      wrap.querySelector('.arc-card').addEventListener('click', () => openCard(i));
+    });
+
+    btnClose.addEventListener('click', closeCard);
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeCard(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCard(); });
   </script>
 </body>
 </html>
