@@ -6,554 +6,452 @@
   <title>SMATh WORLD — Content-Driven, AI-Powered</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;1,400&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;1,400&family=Manrope:wght@600;700;800&family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    :root {
-      --color-bg: #03071e;
-      --color-surface: rgba(255, 255, 255, 0.04);
-      --color-border: rgba(255, 255, 255, 0.1);
-      --color-text-primary: #e1e3e1;
-      --color-text-muted: rgba(255, 255, 255, 0.6);
-      --color-accent: #8273ff;
-      --color-cta: #523dff;
-      --color-cta-hover: #6a55ff;
-      --font-display: 'Newsreader', Georgia, serif;
-      --font-ui: 'Manrope', system-ui, sans-serif;
-    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     html, body {
-      height: 100%;
-      background-color: var(--color-bg);
-      color: var(--color-text-primary);
-      font-family: var(--font-ui);
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
+      width: 100%; height: 100%;
+      overflow: hidden;
+      background: #03071e;
     }
 
-    /* ─── LAYOUT ─────────────────────────────────── */
-    .hero {
+    /* ── Viewport wrapper ── */
+    #viewport {
+      width: 100vw;
+      height: 100vh;
       position: relative;
-      width: 100%;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       overflow: hidden;
     }
 
-    /* ─── BACKGROUND GRADIENTS ───────────────────── */
-    .hero-bg {
+    /* ── Fixed 1480×987 design canvas ── */
+    #canvas {
       position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 55% 11% at 50% 50%, rgba(76, 0, 255, 0.22) 0%, transparent 100%),
-        radial-gradient(ellipse 52% 15% at 20% 30%, rgba(0, 242, 255, 0.11) 0%, transparent 100%),
-        radial-gradient(ellipse 52% 15% at 80% 70%, rgba(255, 0, 221, 0.13) 0%, transparent 100%),
-        linear-gradient(135deg, #03071e 0%, #070b2a 50%, #03071e 100%);
-      pointer-events: none;
-      z-index: 0;
+      top: 0; left: 0;
+      width: 1480px;
+      height: 987px;
+      transform-origin: top left;
+      background: #0d0d0d;
     }
 
-    /* ─── HEADER / NAV ───────────────────────────── */
+    /* ══════════════════════════════════════
+       BACKGROUND GRADIENTS
+    ══════════════════════════════════════ */
+    .bg-layer {
+      position: absolute;
+      inset: 0;
+      width: 1480px; height: 987px;
+      pointer-events: none;
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 1480 987' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'%3E%3Crect width='100%25' height='100%25' fill='url(%23g1)'/%3E%3Cdefs%3E%3CradialGradient id='g1' gradientUnits='userSpaceOnUse' cx='0' cy='0' r='10' gradientTransform='matrix(268.92 0 0 51.332 740 493.5)'%3E%3Cstop stop-color='rgba(76,0,255,0.21)' offset='0'/%3E%3Cstop stop-color='rgba(76,0,255,0.02)' offset='0.5'/%3E%3C/radialGradient%3E%3C/defs%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 1480 987' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'%3E%3Crect width='100%25' height='100%25' fill='url(%23g2)'/%3E%3Cdefs%3E%3CradialGradient id='g2' gradientUnits='userSpaceOnUse' cx='0' cy='0' r='10' gradientTransform='matrix(380.83 0 0 72.693 296 296.1)'%3E%3Cstop stop-color='rgba(0,242,255,0.11)' offset='0'/%3E%3Cstop stop-color='rgba(0,242,255,0)' offset='0.4'/%3E%3C/radialGradient%3E%3C/defs%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 1480 987' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'%3E%3Crect width='100%25' height='100%25' fill='url(%23g3)'/%3E%3Cdefs%3E%3CradialGradient id='g3' gradientUnits='userSpaceOnUse' cx='0' cy='0' r='10' gradientTransform='matrix(380.83 0 0 72.693 1184 690.9)'%3E%3Cstop stop-color='rgba(255,0,221,0.13)' offset='0'/%3E%3Cstop stop-color='rgba(255,0,221,0)' offset='0.4'/%3E%3C/radialGradient%3E%3C/defs%3E%3C/svg%3E"),
+        linear-gradient(90deg, rgb(3,7,30) 0%, rgb(3,7,30) 100%);
+    }
+
+    /* ══════════════════════════════════════
+       HEADER
+       Figma: left:50%, top:24px, w:1224px, translate(-50%,0)
+    ══════════════════════════════════════ */
     .header {
-      position: relative;
-      z-index: 10;
-      width: 100%;
-      max-width: 1480px;
+      position: absolute;
+      left: 50%;
+      top: 24px;
+      width: 1224px;
+      transform: translateX(-50%);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 24px 80px;
-      gap: 40px;
+      z-index: 10;
     }
 
+    /* Logo: 212.985×20.995px */
+    .logo {
+      width: 212.985px;
+      height: 20.995px;
+      position: relative;
+      flex-shrink: 0;
+    }
     .logo img {
-      height: 21px;
-      width: auto;
-      display: block;
+      position: absolute;
+      width: 100%; height: 100%;
+      object-fit: contain;
+      object-position: left center;
     }
 
+    /* Nav: 445.48px wide, items absolutely positioned */
     .nav {
-      display: flex;
-      align-items: center;
-      gap: 30px;
-      list-style: none;
+      position: relative;
+      width: 445.48px;
+      height: 18px;
+      flex-shrink: 0;
     }
-
     .nav a {
-      font-family: var(--font-ui);
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Manrope', sans-serif;
       font-weight: 600;
       font-size: 16px;
-      color: var(--color-text-primary);
+      line-height: 16px;
+      color: #e1e3e1;
       text-decoration: none;
-      transition: color 0.2s ease, opacity 0.2s ease;
-      position: relative;
+      white-space: nowrap;
+      transition: color 0.2s;
     }
+    .nav a:hover { color: #8273ff; }
 
-    .nav a::after {
-      content: '';
-      position: absolute;
-      bottom: -3px;
-      left: 0;
-      width: 0;
-      height: 1.5px;
-      background: var(--color-accent);
-      transition: width 0.25s ease;
-    }
+    /* Exact Figma left offsets */
+    .nav a:nth-child(1) { left: 0.48px; }    /* About */
+    .nav a:nth-child(2) { left: 77.48px; }   /* Clients */
+    .nav a:nth-child(3) { left: 162.48px; }  /* Services */
+    .nav a:nth-child(4) { left: 258.48px; }  /* Portfolio */
+    .nav a:nth-child(5) { left: 355.48px; }  /* Partnership */
 
-    .nav a:hover {
-      color: var(--color-accent);
-    }
-
-    .nav a:hover::after {
-      width: 100%;
-    }
-
-    /* ─── BUTTON ──────────────────────────────────── */
+    /* ══════════════════════════════════════
+       BUTTON BASE
+    ══════════════════════════════════════ */
     .btn {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      padding: 12px 24px;
-      background: var(--color-cta);
+      gap: 12.01px;
+      background: #523dff;
       color: #fff;
-      font-family: var(--font-ui);
+      font-family: 'Manrope', sans-serif;
       font-weight: 800;
-      font-size: 16px;
       text-decoration: none;
       border: none;
       border-radius: 9999px;
       cursor: pointer;
-      transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
       white-space: nowrap;
       flex-shrink: 0;
+      transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
     }
-
     .btn:hover {
-      background: var(--color-cta-hover);
-      box-shadow: 0 0 24px rgba(82, 61, 255, 0.5);
+      background: #6a55ff;
+      box-shadow: 0 0 24px rgba(82,61,255,0.5);
       transform: translateY(-1px);
     }
+    .btn:active { transform: translateY(0); }
+    .btn-icon { width: 16px; height: 16px; display: block; flex-shrink: 0; }
 
-    .btn:active {
-      transform: translateY(0);
-    }
+    /* Header button: px-16, py-12, 16px font */
+    .btn-header { padding: 12px 16px; font-size: 16px; line-height: 24px; }
 
-    .btn--lg {
-      padding: 16px 32px;
-      font-size: 18px;
-    }
+    /* Hero button: px-32, py-16, 18px font */
+    .btn-hero { padding: 16px 32px; font-size: 18px; line-height: 24px; }
 
-    .btn-icon {
-      width: 16px;
-      height: 16px;
-      flex-shrink: 0;
-    }
-
-    /* ─── ARC GALLERY ────────────────────────────── */
-    .arc-gallery {
-      position: relative;
-      z-index: 1;
-      width: 1251px;
+    /* ══════════════════════════════════════
+       ARC GALLERY CONTAINER
+       Figma: left:calc(50%-1px), top:calc(50%-36px)
+              w:1226px, h:703px, translate(-50%,-50%)
+              overflow:clip
+    ══════════════════════════════════════ */
+    .arc-container {
+      position: absolute;
+      left: calc(50% - 1px);
+      top: calc(50% - 36px);
+      width: 1226px;
       height: 703px;
-      flex-shrink: 0;
-      margin-top: -8px;
+      transform: translate(-50%, -50%);
+      overflow: hidden;
+      z-index: 1;
     }
 
-    .arc-card-wrapper {
+    /* Card wrapper: absolute, centers the rotated card */
+    .arc-wrap {
       position: absolute;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
+    /* Card: exact Figma 149.766×192.551px, border-radius:17.115px */
     .arc-card {
-      background: rgba(255, 255, 255, 0);
-      border: 1.07px solid var(--color-border);
-      border-radius: 17px;
-      width: 149px;
-      height: 192px;
+      width: 149.766px;
+      height: 192.551px;
+      border-radius: 17.115px;
+      border: 1.07px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0);
+      box-shadow: 0px 12.836px 34.23px 0px rgba(0,0,0,0.6);
       overflow: hidden;
-      box-shadow: 0 12px 34px rgba(0, 0, 0, 0.6);
-      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-      cursor: pointer;
       flex-shrink: 0;
+      cursor: pointer;
+      transition: box-shadow 0.3s, border-color 0.3s;
     }
-
     .arc-card:hover {
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 20px rgba(130, 115, 255, 0.3);
-      border-color: rgba(255, 255, 255, 0.25);
-      transform: scale(1.04);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 20px rgba(130,115,255,0.3);
+      border-color: rgba(255,255,255,0.25);
     }
-
     .arc-card img {
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       object-fit: cover;
       display: block;
       pointer-events: none;
     }
 
-    /* Card positions & rotations matching Figma */
-    .arc-card-wrapper:nth-child(1) { left: 33px;  top: 494px; width: 202px; height: 163px; }
-    .arc-card-wrapper:nth-child(1) .arc-card { transform: rotate(-86deg); }
-    .arc-card-wrapper:nth-child(2) { left: 71px;  top: 267px; width: 240px; height: 223px; }
-    .arc-card-wrapper:nth-child(2) .arc-card { transform: rotate(-62deg); }
-    .arc-card-wrapper:nth-child(3) { left: 204px; top: 100px; width: 237px; height: 244px; }
-    .arc-card-wrapper:nth-child(3) .arc-card { transform: rotate(-38deg); }
-    .arc-card-wrapper:nth-child(4) { left: 411px; top: 21px;  width: 192px; height: 223px; }
-    .arc-card-wrapper:nth-child(4) .arc-card { transform: rotate(-14deg); }
-    .arc-card-wrapper:nth-child(5) { left: 649px; top: 21px;  width: 192px; height: 223px; }
-    .arc-card-wrapper:nth-child(5) .arc-card { transform: rotate(14deg); }
-    .arc-card-wrapper:nth-child(6) { left: 810px; top: 100px; width: 237px; height: 244px; }
-    .arc-card-wrapper:nth-child(6) .arc-card { transform: rotate(38deg); }
-    .arc-card-wrapper:nth-child(7) { left: 940px; top: 267px; width: 240px; height: 223px; }
-    .arc-card-wrapper:nth-child(7) .arc-card { transform: rotate(62deg); }
-    .arc-card-wrapper:nth-child(8) { left: 1015px; top: 494px; width: 203px; height: 163px; }
-    .arc-card-wrapper:nth-child(8) .arc-card { transform: rotate(86deg); }
+    /* ── Card positions (Figma exact) ── */
+    .c1 { left: 20.48px;  top: 494.06px; width: 202.530px; height: 162.832px; }
+    .c1 .arc-card { transform: rotate(-86deg); }
 
-    /* ─── HERO CONTENT ───────────────────────────── */
-    .hero-content {
-      position: relative;
+    .c2 { left: 57.99px;  top: 267.49px; width: 240.318px; height: 222.624px; }
+    .c2 .arc-card { transform: rotate(-62deg); }
+
+    .c3 { left: 191.39px; top: 100.10px; width: 236.556px; height: 243.931px; }
+    .c3 .arc-card { transform: rotate(-38deg); }
+
+    .c4 { left: 397.61px; top:  20.84px; width: 191.899px; height: 223.057px; }
+    .c4 .arc-card { transform: rotate(-14deg); }
+
+    .c5 { left: 635.69px; top:  20.84px; width: 191.901px; height: 223.064px; }
+    .c5 .arc-card { transform: rotate(14deg); }
+
+    .c6 { left: 797.26px; top: 100.10px; width: 236.557px; height: 243.933px; }
+    .c6 .arc-card { transform: rotate(38deg); }
+
+    .c7 { left: 926.91px; top: 267.49px; width: 240.315px; height: 222.623px; }
+    .c7 .arc-card { transform: rotate(62deg); }
+
+    .c8 { left: 1002.20px; top: 494.07px; width: 202.529px; height: 162.833px; }
+    .c8 .arc-card { transform: rotate(86deg); }
+
+    /* ══════════════════════════════════════
+       HEADLINE CONTENT
+       Figma: left:50%, top:calc(50%+115.5px)
+              w:654px, h:272px, translate(-50%,-50%)
+              border-radius:200px
+    ══════════════════════════════════════ */
+    .headline-content {
+      position: absolute;
+      left: 50%;
+      top: calc(50% + 115.5px);
+      width: 654px;
+      height: 272px;
+      transform: translate(-50%, -50%);
+      border-radius: 200px;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 654 272' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'%3E%3Crect width='100%25' height='100%25' fill='url(%23hg)'/%3E%3Cdefs%3E%3CradialGradient id='hg' gradientUnits='userSpaceOnUse' cx='0' cy='0' r='10' gradientTransform='matrix(41.815 0 0 21.821 327 136)'%3E%3Cstop stop-color='rgba(3,7,30,0.8)' offset='0'/%3E%3Cstop stop-color='rgba(3,7,30,0)' offset='0.8'/%3E%3C/radialGradient%3E%3C/defs%3E%3C/svg%3E");
       z-index: 5;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 32px;
-      text-align: center;
-      margin-top: -280px; /* overlap the arc gallery */
-      padding: 0 20px;
-      /* radial vignette behind text */
-      background: radial-gradient(ellipse 654px 260px at center, rgba(3, 7, 30, 0.82) 0%, rgba(3, 7, 30, 0) 80%);
-      padding: 60px 80px 0;
     }
 
-    .headline {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .headline-line {
-      font-family: var(--font-display);
-      font-weight: 400;
-      font-style: normal;
-      font-size: 60px;
-      line-height: 1.1;
-      color: var(--color-text-primary);
-    }
-
-    .headline-italic {
-      font-family: var(--font-display);
-      font-weight: 400;
-      font-style: italic;
-      font-size: 48px;
-      line-height: 1.2;
-      color: var(--color-accent);
-    }
-
-    /* ─── BOTTOM INFO ────────────────────────────── */
-    .hero-footer {
-      position: relative;
-      z-index: 5;
+    .headline-lines {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0;
-      width: 630px;
-      max-width: 100%;
-      margin-top: 48px;
-      padding-bottom: 60px;
-    }
-
-    .subtitle {
-      font-family: var(--font-ui);
-      font-weight: 300;
-      font-size: 16px;
-      line-height: 1.6;
-      color: var(--color-text-primary);
+      gap: 8px;
+      width: 654px;
       text-align: center;
-      margin-bottom: 0;
     }
 
-    .service-tags {
+    /* Newsreader Regular 60px, leading-none */
+    .hl {
+      font-family: 'Newsreader', Georgia, serif;
+      font-weight: 400;
+      font-style: normal;
+      font-size: 60px;
+      line-height: 1;
+      color: #e1e3e1;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* Newsreader Italic 48px, color:#8273ff, leading-none */
+    .hl-italic {
+      font-family: 'Newsreader', Georgia, serif;
+      font-weight: 400;
+      font-style: italic;
+      font-size: 48px;
+      line-height: 1;
+      color: #8273ff;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* ══════════════════════════════════════
+       BOTTOM INFO
+       Figma: left:425px, top:809px, w:630px
+              flex-col, gap:24px, items:center
+    ══════════════════════════════════════ */
+    .bottom-info {
+      position: absolute;
+      left: 425px;
+      top: 809px;
+      width: 630px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      z-index: 5;
+    }
+
+    /* Gothic A1 Light → Noto Sans KR 300, 20px, color:white, leading-none */
+    .subtitle {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 300;
+      font-size: 20px;
+      line-height: 1;
+      color: #ffffff;
+      text-align: center;
+      width: 100%;
+    }
+
+    /* border-top, px:42, pt:13, pb:12, gap:30 */
+    .service-row {
       display: flex;
       align-items: center;
       gap: 30px;
       padding: 13px 42px 12px;
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      border-top: 1px solid rgba(255,255,255,0.2);
       width: 100%;
-      margin-top: 20px;
     }
 
+    /* Manrope Bold 16px, color:#8273ff */
     .service-tag {
-      font-family: var(--font-ui);
+      font-family: 'Manrope', sans-serif;
       font-weight: 700;
-      font-size: 14px;
-      color: var(--color-accent);
+      font-size: 16px;
+      line-height: 16px;
+      color: #8273ff;
       white-space: nowrap;
-      cursor: pointer;
-      transition: color 0.2s ease, opacity 0.2s ease;
     }
 
-    .service-tag:hover {
-      opacity: 0.75;
-    }
-
-    .service-divider {
+    .vdivider {
       width: 1px;
       height: 24px;
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255,255,255,0.2);
       flex-shrink: 0;
-    }
-
-    /* ─── SCROLL HINT ────────────────────────────── */
-    .scroll-hint {
-      position: absolute;
-      bottom: 32px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      color: var(--color-text-muted);
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      animation: fadeInUp 1s 1.5s both;
-      z-index: 10;
-    }
-
-    .scroll-line {
-      width: 1px;
-      height: 40px;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
-      animation: scrollPulse 2s ease-in-out infinite;
-    }
-
-    /* ─── ANIMATIONS ──────────────────────────────── */
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateX(-50%) translateY(16px); }
-      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
-    }
-
-    @keyframes scrollPulse {
-      0%, 100% { opacity: 0.3; transform: scaleY(1); }
-      50%       { opacity: 1;   transform: scaleY(1.1); }
-    }
-
-    .fade-in {
-      animation: fadeIn 0.9s ease both;
-    }
-
-    .fade-in-up {
-      animation: fadeInUpSimple 0.9s ease both;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to   { opacity: 1; }
-    }
-
-    @keyframes fadeInUpSimple {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .delay-1 { animation-delay: 0.15s; }
-    .delay-2 { animation-delay: 0.3s; }
-    .delay-3 { animation-delay: 0.5s; }
-    .delay-4 { animation-delay: 0.7s; }
-    .delay-5 { animation-delay: 0.9s; }
-
-    /* ─── RESPONSIVE ─────────────────────────────── */
-    @media (max-width: 1300px) {
-      .arc-gallery {
-        width: 100%;
-        max-width: 1251px;
-        transform: scale(0.85);
-        transform-origin: top center;
-        margin-bottom: -80px;
-      }
-
-      .header {
-        padding: 20px 40px;
-      }
-    }
-
-    @media (max-width: 900px) {
-      .arc-gallery {
-        transform: scale(0.55);
-        transform-origin: top center;
-        margin-bottom: -260px;
-      }
-
-      .hero-content {
-        margin-top: -200px;
-        padding: 40px 24px 0;
-      }
-
-      .headline-line { font-size: 40px; }
-      .headline-italic { font-size: 32px; }
-
-      .nav { display: none; }
-
-      .hero-footer {
-        width: 90%;
-      }
-
-      .service-tags {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 16px 20px;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .arc-gallery {
-        transform: scale(0.38);
-        transform-origin: top center;
-        margin-bottom: -380px;
-      }
-
-      .hero-content {
-        margin-top: -120px;
-      }
-
-      .headline-line { font-size: 32px; }
-      .headline-italic { font-size: 26px; }
-
-      .header {
-        padding: 16px 20px;
-        gap: 16px;
-      }
     }
   </style>
 </head>
 <body>
-  <section class="hero" aria-label="SMATh WORLD Hero">
-    <!-- Background -->
-    <div class="hero-bg" aria-hidden="true"></div>
+  <div id="viewport">
+    <div id="canvas">
 
-    <!-- Header -->
-    <header class="header fade-in">
-      <a href="/" class="logo" aria-label="SMATh WORLD 홈">
-        <img
-          src="https://www.figma.com/api/mcp/asset/2d6b70b4-e366-442a-9ba6-5604ed18b787"
-          alt="SMATh WORLD"
-          height="21"
-        />
-      </a>
+      <!-- Background -->
+      <div class="bg-layer"></div>
 
-      <nav aria-label="주요 메뉴">
-        <ul class="nav">
-          <li><a href="#about">About</a></li>
-          <li><a href="#clients">Clients</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#portfolio">Portfolio</a></li>
-          <li><a href="#partnership">Partnership Process</a></li>
-        </ul>
-      </nav>
+      <!-- ── HEADER ── -->
+      <header class="header">
+        <div class="logo">
+          <img src="https://www.figma.com/api/mcp/asset/2f8f80dc-077f-4e5f-ae41-35746b59ba74" alt="SMATh WORLD" />
+        </div>
 
-      <a href="#consultation" class="btn" aria-label="무료 상담 신청">
-        Free Consultation
-        <img
-          class="btn-icon"
-          src="https://www.figma.com/api/mcp/asset/4035902b-eec9-44ca-a347-7afc5b58740f"
-          alt=""
-          aria-hidden="true"
-        />
-      </a>
-    </header>
+        <nav class="nav" aria-label="주요 메뉴">
+          <a href="#about">About</a>
+          <a href="#clients">Clients</a>
+          <a href="#services">Services</a>
+          <a href="#portfolio">Portfolio</a>
+          <a href="#partnership">Partnership</a>
+        </nav>
 
-    <!-- Arc Image Gallery -->
-    <div class="arc-gallery" aria-label="포트폴리오 갤러리" role="region">
-      <div class="arc-card-wrapper">
-        <div class="arc-card">
-          <img src="https://www.figma.com/api/mcp/asset/b20a5582-e442-4b2b-85e8-0874af139794" alt="AI Genesis — 생성 AI 아트" />
-        </div>
-      </div>
-      <div class="arc-card-wrapper">
-        <div class="arc-card">
-          <img src="https://www.figma.com/api/mcp/asset/9066ece8-35a0-4c1e-97d5-1ae13bac9c4a" alt="AI Portrait — AI 인물 포트레이트" />
-        </div>
-      </div>
-      <div class="arc-card-wrapper">
-        <div class="arc-card">
-          <img src="https://www.figma.com/api/mcp/asset/dff9bb14-76e0-4485-b320-8af7e04193bc" alt="Sculptural Art — 조각 예술" />
-        </div>
-      </div>
-      <div class="arc-card-wrapper">
-        <div class="arc-card">
-          <img src="https://www.figma.com/api/mcp/asset/c8e39ca2-62b3-4874-ba6c-8f581a2bc409" alt="Abstract Form — 추상 형태" />
-        </div>
-      </div>
-      <div class="arc-card-wrapper">
-        <div class="arc-card">
-          <img src="https://www.figma.com/api/mcp/asset/0d288f61-51a4-43bc-90e0-28e2aedc1113" alt="Neural Geometry — 뉴럴 지오메트리" />
-        </div>
-      </div>
-      <div class="arc-card-wrapper">
-        <div class="arc-card">
-          <img src="https://www.figma.com/api/mcp/asset/386dcc12-5ec3-4a1a-8a2a-960cb23ba5db" alt="Chroma Scene — 크로마 씬" />
-        </div>
-      </div>
-      <div class="arc-card-wrapper">
-        <div class="arc-card">
-          <img src="https://www.figma.com/api/mcp/asset/1e311ded-6f30-4724-84da-c7c3789cd56f" alt="Ethereal Visual — 에테리얼 비주얼" />
-        </div>
-      </div>
-      <div class="arc-card-wrapper">
-        <div class="arc-card">
-          <img src="https://www.figma.com/api/mcp/asset/0a61409d-1738-477d-861b-70febc6f06cb" alt="Neural Pulse — 뉴럴 펄스" />
-        </div>
-      </div>
-    </div>
+        <a href="#contact" class="btn btn-header">
+          Contact Us
+          <img class="btn-icon" src="https://www.figma.com/api/mcp/asset/4a132ce5-789d-463c-aab8-16628008f50e" alt="" aria-hidden="true" />
+        </a>
+      </header>
 
-    <!-- Hero Content (overlaps gallery bottom) -->
-    <div class="hero-content">
-      <div class="headline fade-in-up delay-2">
-        <p class="headline-line">Content-Driven,</p>
-        <p class="headline-line">AI-Powered:</p>
-        <p class="headline-italic">Your Partner for the AI Agent Era.</p>
+      <!-- ── ARC GALLERY ── -->
+      <div class="arc-container" aria-label="포트폴리오 갤러리">
+
+        <div class="arc-wrap c1">
+          <div class="arc-card">
+            <img src="https://www.figma.com/api/mcp/asset/618addea-e7c3-4052-8485-52cfe8adda74" alt="AI Genesis" />
+          </div>
+        </div>
+
+        <div class="arc-wrap c2">
+          <div class="arc-card">
+            <img src="https://www.figma.com/api/mcp/asset/44ee8302-23ab-412f-86ff-c82256adf351" alt="AI Portrait" />
+          </div>
+        </div>
+
+        <div class="arc-wrap c3">
+          <div class="arc-card">
+            <img src="https://www.figma.com/api/mcp/asset/84dcdfe4-2910-41b3-88ed-184782ab6c4e" alt="Sculptural Art" />
+          </div>
+        </div>
+
+        <div class="arc-wrap c4">
+          <div class="arc-card">
+            <img src="https://www.figma.com/api/mcp/asset/decb0e8c-a1e4-421e-9c48-46b0d42c81bf" alt="Abstract Form" />
+          </div>
+        </div>
+
+        <div class="arc-wrap c5">
+          <div class="arc-card">
+            <img src="https://www.figma.com/api/mcp/asset/abb76494-0e56-4322-98e2-13112da59b43" alt="Neural Geometry" />
+          </div>
+        </div>
+
+        <div class="arc-wrap c6">
+          <div class="arc-card">
+            <img src="https://www.figma.com/api/mcp/asset/82f8c764-ac9e-4b97-a922-5076f4513e14" alt="Chroma Scene" />
+          </div>
+        </div>
+
+        <div class="arc-wrap c7">
+          <div class="arc-card">
+            <img src="https://www.figma.com/api/mcp/asset/c0c48bf8-f3b3-4314-b7c5-71e1e5c1a7c2" alt="Ethereal Visual" />
+          </div>
+        </div>
+
+        <div class="arc-wrap c8">
+          <div class="arc-card">
+            <img src="https://www.figma.com/api/mcp/asset/6b9f5f38-1ca7-4bf4-a0b2-124f68bfca6b" alt="Neural Pulse" />
+          </div>
+        </div>
+
       </div>
 
-      <a href="#consultation" class="btn btn--lg fade-in-up delay-3" id="consultation" aria-label="무료 상담 신청">
-        Free Consultation
-        <img
-          class="btn-icon"
-          src="https://www.figma.com/api/mcp/asset/4035902b-eec9-44ca-a347-7afc5b58740f"
-          alt=""
-          aria-hidden="true"
-        />
-      </a>
-    </div>
-
-    <!-- Footer Info -->
-    <div class="hero-footer fade-in-up delay-4">
-      <p class="subtitle">콘텐츠 역량 위에, 기업의 AI 활용과 AI 에이전트 도입을 함께 해결합니다.</p>
-      <div class="service-tags" role="list">
-        <span class="service-tag" role="listitem">AI Agent Services</span>
-        <div class="service-divider" aria-hidden="true"></div>
-        <span class="service-tag" role="listitem">Generative AI Solutions</span>
-        <div class="service-divider" aria-hidden="true"></div>
-        <span class="service-tag" role="listitem">XR &amp; Media Art</span>
+      <!-- ── HEADLINE CONTENT ── -->
+      <div class="headline-content">
+        <div class="headline-lines">
+          <p class="hl">Content-Driven,&nbsp;</p>
+          <p class="hl">AI-Powered:</p>
+          <p class="hl-italic">Your Partner for the AI Agent Era.</p>
+        </div>
+        <a href="#consultation" class="btn btn-hero">
+          Free Consultation
+          <img class="btn-icon" src="https://www.figma.com/api/mcp/asset/4a132ce5-789d-463c-aab8-16628008f50e" alt="" aria-hidden="true" />
+        </a>
       </div>
-    </div>
 
-    <!-- Scroll Hint -->
-    <div class="scroll-hint" aria-hidden="true">
-      <div class="scroll-line"></div>
-      <span>Scroll</span>
-    </div>
-  </section>
+      <!-- ── BOTTOM INFO ── -->
+      <div class="bottom-info">
+        <p class="subtitle">콘텐츠 역량 위에, 기업의 AI 활용과 AI 에이전트 도입을 함께 해결합니다.</p>
+        <div class="service-row">
+          <span class="service-tag">AI Agent Services</span>
+          <div class="vdivider"></div>
+          <span class="service-tag">Generative AI Solutions</span>
+          <div class="vdivider"></div>
+          <span class="service-tag">XR &amp; Media Art</span>
+        </div>
+      </div>
+
+    </div><!-- /canvas -->
+  </div><!-- /viewport -->
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const DESIGN_W = 1480;
+    const DESIGN_H = 987;
+
+    function scaleCanvas() {
+      const scaleX = window.innerWidth  / DESIGN_W;
+      const scaleY = window.innerHeight / DESIGN_H;
+      const scale  = Math.min(scaleX, scaleY);
+
+      const offsetX = (window.innerWidth  - DESIGN_W * scale) / 2;
+      const offsetY = (window.innerHeight - DESIGN_H * scale) / 2;
+
+      canvas.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale})`;
+    }
+
+    scaleCanvas();
+    window.addEventListener('resize', scaleCanvas);
+  </script>
 </body>
 </html>
