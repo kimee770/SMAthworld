@@ -541,7 +541,7 @@
 
     /* ── 캔버스: 너비 기준 스케일, 상단 정렬 ── */
     function scaleCanvas() {
-      const scale = window.innerWidth / DESIGN_W;
+      const scale = Math.min(1, window.innerWidth / DESIGN_W);
       canvas.style.transform       = `scale(${scale})`;
       canvas.style.transformOrigin = 'top left';
       // 스케일된 높이만큼 viewport 공간 확보
